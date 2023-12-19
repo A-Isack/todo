@@ -4,16 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const mongoose_1 = require("mongoose");
 const app = (0, express_1.default)();
-app.get(`/`, (req, res, next) => {
-    const add = (a, b) => a + b;
-    let message = `Hello there `;
-    res.send(message);
-    console.log(add(1, 2));
-    next(`Some user used our API...next`);
-}, (message) => {
-    console.log(message);
+// we should use process .env to store secrets by installing .env and requiring the .env congif 
+//(after creating the .env file and adding it to giignore but i won't do it bcs this a temporary user).
+(0, mongoose_1.connect)("mongodb+srv://todoassignment:5b34u22f5jDKhHr4@atlascluster.h7g4rxq.mongodb.net/todo?retryWrites=true&w=majority")
+    .then(() => { console.log(`connected successfully`); })
+    .catch(ex => { console.log(ex); });
+app.get(`*`, (req, res, next) => {
+    res.send("Incorrect route");
 });
-app.listen(5000, () => {
-    console.log(`app running on 5000`);
+let port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.table({ status: "running", port });
 });
