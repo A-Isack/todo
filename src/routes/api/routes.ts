@@ -106,4 +106,27 @@ router.get(`/todo/:uid/`, async(req : Request, res: Response)=>{
 
 })
 
+// the fifth function (get all)
+
+router.get(`/todo/`, async(req : Request, res: Response)=>{
+
+    try {
+        List.find()
+        .then(data=>{
+            if(data){
+                res.json({todo: data})
+            }
+            else{
+                res.send("No records found")
+            }
+            })
+            
+        .catch(err=>{res.send("there was an unexpected error, please use valid parameters")})
+
+    } catch (error) {
+        res.send("there was an unexpected error, please use a valid id")
+    }
+
+})
+
 export const apiRoutes =  router
