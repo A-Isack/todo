@@ -2,10 +2,11 @@ import express, {Request, Response} from "express";
 import {User}  from "../../models/users";
 import {List}  from "../../models/list";
 import { faker } from "@faker-js/faker";
+import { authenticate } from "../../middleware/auth";
 
 const router  : express.Router = express.Router()
 
-router.post(`/todo/new/:uid`, async(req : Request, res: Response)=>{
+router.post(`/todo/new/:uid`, authenticate(), async(req : Request, res: Response)=>{
     const userId : String= req.params.uid
     const {todo, date} = req.body
     
@@ -31,7 +32,7 @@ router.post(`/todo/new/:uid`, async(req : Request, res: Response)=>{
 })
 
 // we can also use PUT or patch req type 
-router.post(`/todo/update/:recId`, async(req : Request, res: Response)=>{
+router.post(`/todo/update/:recId`, authenticate(), async(req : Request, res: Response)=>{
     const recId : String= req.params.recId
     const {todo, date} = req.body
 
@@ -54,7 +55,7 @@ router.post(`/todo/update/:recId`, async(req : Request, res: Response)=>{
 })
 
 // we can also use DELETE or patch req type 
-router.post(`/todo/delete/:recId`, async(req : Request, res: Response)=>{
+router.post(`/todo/delete/:recId`, authenticate(), async(req : Request, res: Response)=>{
     const recId : String= req.params.recId
 
     try {
@@ -76,7 +77,7 @@ router.post(`/todo/delete/:recId`, async(req : Request, res: Response)=>{
 })
 
 // The route is user to get all todos or a specific todo if the todo id is provided in the query string 
-router.get(`/todo/:uid/`, async(req : Request, res: Response)=>{
+router.get(`/todo/:uid/`, authenticate(), async(req : Request, res: Response)=>{
     const  userId = req.params.uid
     try {
         req.query.todo ? 
@@ -109,7 +110,7 @@ router.get(`/todo/:uid/`, async(req : Request, res: Response)=>{
 
 // the fifth function (get all)
 
-router.get(`/todo/`, async(req : Request, res: Response)=>{
+router.get(`/todo/`, authenticate(), async(req : Request, res: Response)=>{
 
     try {
         List.find()
@@ -131,7 +132,7 @@ router.get(`/todo/`, async(req : Request, res: Response)=>{
 })
 
 // seeds routes where recCount is the number of required fakes.
-router.post("/todo/seeds/:userId/:recCount", async (req : Request, res: Response)=>{
+router.post("/todo/seeds/:userId/:recCount", authenticate(), async (req : Request, res: Response)=>{
     const userId : String= req.params.userId
     const count = parseInt(req.params.recCount) || 0
 
