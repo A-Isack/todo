@@ -1,4 +1,4 @@
-import express, {Application, Request, Response, NextFunction} from "express";
+import express, {Request, Response} from "express";
 import {User}  from "../../models/users";
 import {List}  from "../../models/list";
 
@@ -10,13 +10,12 @@ router.post(`/todo/new/:uid`, async(req : Request, res: Response)=>{
     
     try {
         const userData = await User.findById(userId)
-        console.log(userData)
 
         if(!userData){res.send("user not found")}
         else{
             try{
                 await List.create({userId: userId,date,todo})
-                .then(data=>{console.log(data); res.json({result: "todo creared successfully",data})})
+                .then(data=>{res.json({result: "todo creared successfully",data})})
                 .catch(err=>{res.send("there was an unexpected error, please use valid parameters")})
             }
             catch{
@@ -25,7 +24,6 @@ router.post(`/todo/new/:uid`, async(req : Request, res: Response)=>{
         }
 
     } catch (error) {
-        console.log(error)
         res.send("there was an unexpected error, please use a valid userId")
     }
 
@@ -40,7 +38,6 @@ router.post(`/todo/update/:recId`, async(req : Request, res: Response)=>{
         List.findByIdAndUpdate({_id: recId},{todo, date},{new: true})
         .then(data=>{
         if(data){
-            console.log(data); 
             res.json({result: "todo updated successfully",data})
         }
         else{
@@ -50,7 +47,6 @@ router.post(`/todo/update/:recId`, async(req : Request, res: Response)=>{
         .catch(err=>{res.send("there was an unexpected error, please use valid parameters")})
 
     } catch (error) {
-        console.log(error)
         res.send("there was an unexpected error, please use a valid id")
     }
 
@@ -64,7 +60,6 @@ router.post(`/todo/delete/:recId`, async(req : Request, res: Response)=>{
         List.findOneAndDelete({_id: recId})
         .then(data=>{
         if(data){
-            console.log(data); 
             res.json({result: "todo removed successfully",data})
         }
         else{
@@ -74,7 +69,6 @@ router.post(`/todo/delete/:recId`, async(req : Request, res: Response)=>{
         .catch(err=>{res.send("there was an unexpected error, please use valid parameters")})
 
     } catch (error) {
-        console.log(error)
         res.send("there was an unexpected error, please use a valid id")
     }
 
@@ -83,14 +77,11 @@ router.post(`/todo/delete/:recId`, async(req : Request, res: Response)=>{
 // The route is user to get all todos or a specific todo if the todo id is provided in the query string 
 router.get(`/todo/:uid/`, async(req : Request, res: Response)=>{
     const  userId = req.params.uid
-
-    console.log(req.query)
     try {
         req.query.todo ? 
         List.find({userId, _id: req.query.todo})
         .then(data=>{
             if(data){
-                console.log(data); 
                 res.json({todo: data})
             }
             else{
@@ -101,7 +92,6 @@ router.get(`/todo/:uid/`, async(req : Request, res: Response)=>{
 
         .then(data=>{
         if(data){
-            console.log(data); 
             res.json({todoList: data})
         }
         else{
@@ -111,7 +101,6 @@ router.get(`/todo/:uid/`, async(req : Request, res: Response)=>{
         .catch(err=>{res.send("there was an unexpected error, please use valid parameters")})
 
     } catch (error) {
-        console.log(error)
         res.send("there was an unexpected error, please use a valid id")
     }
 
