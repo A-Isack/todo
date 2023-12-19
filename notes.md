@@ -1,0 +1,7 @@
+- Please note that all the basic required routes (crud operations were included on the master branch).
+- We could also use the request type (PUT, DELETE, PATCH and others) but i preferred to use the old conventoin instead.
+- the todo seeds route, get all (func5) route, and basic authentication route are on the branch func5.
+- Please use {username: 'ashraf_Isack', secret: '1234'} on the request body to test the authentication (on func5 branch).
+- please find the file postman.collection.sql file to import the postman route collection.
+- Please find the gitHub repo @ git@github.com:A-Isack/todo.git
+- Please find the replit repo @ https://replit.com/@ashrafesack/todo
